@@ -3,186 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>โบว์รักพี่ไหม 👑💖</title>
+<title>Valentine ❤️</title>
 
 <style>
-
 body{
-    margin:0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#ff9ec4,#ffcce0);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
     text-align:center;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    overflow:hidden;
 }
 
-/* กล่อง */
-.container{
-    background:white;
-    padding:30px;
-    border-radius:30px;
-    box-shadow:0 15px 40px rgba(255,105,180,0.4);
-    width:320px;
-    position:relative;
-}
-
-/* ปุ่ม */
-button{
-    background:linear-gradient(45deg,#ff4f8b,#ff7aa8);
-    border:none;
+#countdown{
+    font-size:60px;
     color:white;
-    padding:12px 22px;
-    border-radius:25px;
+    margin-top:100px;
+}
+
+.box{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    display:inline-block;
+    margin-top:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+img{
+    width:220px;
+    border-radius:15px;
+}
+
+button{
+    padding:15px 25px;
     font-size:18px;
+    border:none;
+    border-radius:15px;
     cursor:pointer;
     margin:10px;
-    box-shadow:0 5px 15px rgba(255,105,180,0.4);
+    position:absolute;
 }
 
-/* ปุ่มรักหนี */
 #loveBtn{
-    position:absolute;
-    left:40px;
-    top:150px;
-    transition:0.2s;
+    background:#ff4d6d;
+    color:white;
 }
 
-/* ปุ่มไม่รัก */
-#noBtn{
-    position:absolute;
-    right:40px;
-    top:150px;
+#noLoveBtn{
+    background:#666;
+    color:white;
+    animation:shake 0.2s infinite;
 }
 
-/* countdown */
-#countdown{
-    font-size:70px;
-    color:#ff4f8b;
-    font-weight:bold;
+@keyframes shake{
+    0%{transform:translate(1px,1px);}
+    25%{transform:translate(-1px,2px);}
+    50%{transform:translate(-3px,1px);}
+    75%{transform:translate(2px,-1px);}
+    100%{transform:translate(1px,-2px);}
 }
 
-/* หัวใจ */
-.bigHeart{
-    position:fixed;
-    font-size:30px;
-    animation:boom 1s linear forwards;
-}
-
-@keyframes boom{
-    from{transform:scale(0);opacity:1;}
-    to{transform:scale(3);opacity:0;}
+#message{
+    font-size:22px;
+    color:#ff4d6d;
+    margin-top:20px;
 }
 
 </style>
 </head>
 
-<body onclick="startApp()">
+<body>
 
-<div class="container">
+<div id="countdown">20</div>
 
-<h2>รอแป๊บนะ 💖</h2>
+<div id="main" style="display:none;">
+    <div class="box">
+        <img src="bow.png">
+        <h2>เค้าถามอะไรหน่อยได้ไหม 🥺</h2>
+        <div id="message"></div>
+    </div>
 
-<div id="countdown">10</div>
-
-<div id="buttons" style="display:none; position:relative; height:220px;">
-
-<button id="loveBtn">รัก 💖</button>
-<button id="noBtn">ไม่รัก 😝</button>
-
+    <button id="loveBtn">รัก 💖</button>
+    <button id="noLoveBtn">ไม่รัก 😭</button>
 </div>
 
-</div>
-
-<audio id="music" src="music.mp3" preload="auto"></audio>
+<audio id="music" src="music.mp3"></audio>
 
 <script>
 
-const music = document.getElementById("music");
-const loveBtn = document.getElementById("loveBtn");
-const noBtn = document.getElementById("noBtn");
-const buttons = document.getElementById("buttons");
+let time = 20;
+let countdownEl = document.getElementById("countdown");
+let main = document.getElementById("main");
+let music = document.getElementById("music");
 
-let started = false;
-let speed = 1;
+let loveBtn = document.getElementById("loveBtn");
+let noLoveBtn = document.getElementById("noLoveBtn");
+let message = document.getElementById("message");
 
-/* เริ่ม */
-function startApp(){
+let timer = setInterval(()=>{
+    time--;
+    countdownEl.innerHTML = time;
 
-if(started) return;
-started = true;
-
-music.play().catch(()=>{});
-
-let time = 10;
-const cd = document.getElementById("countdown");
-
-const timer = setInterval(()=>{
-
-time--;
-cd.innerText = time;
-
-if(time <= 0){
-
-clearInterval(timer);
-
-cd.style.display = "none";
-buttons.style.display = "block";
-
-}
-
+    if(time<=0){
+        clearInterval(timer);
+        countdownEl.style.display="none";
+        main.style.display="block";
+        music.play();
+        showButtons();
+    }
 },1000);
 
+function randomMove(btn){
+    let x = Math.random()*(window.innerWidth-120);
+    let y = Math.random()*(window.innerHeight-60);
+    btn.style.left = x+"px";
+    btn.style.top = y+"px";
 }
 
-/* ปุ่มรักหนี */
-loveBtn.addEventListener("mouseover", moveLove);
-loveBtn.addEventListener("click", moveLove);
-
-function moveLove(){
-
-const x = Math.random() * (window.innerWidth - 120);
-const y = Math.random() * (window.innerHeight - 80);
-
-speed += 0.4;
-
-loveBtn.style.transition = 0.3 / speed + "s";
-loveBtn.style.left = x + "px";
-loveBtn.style.top = y + "px";
-
+function showButtons(){
+    randomMove(loveBtn);
+    randomMove(noLoveBtn);
 }
 
-/* ปุ่มไม่รัก */
-noBtn.onclick = () => {
+noLoveBtn.addEventListener("mouseover",()=>{
+    randomMove(noLoveBtn);
+});
 
-explodeHearts();
-
-alert("ไม่รักจริงหรอ 😭");
-
-}
-
-/* หัวใจ */
-function explodeHearts(){
-
-for(let i=0;i<40;i++){
-
-let heart=document.createElement("div");
-heart.className="bigHeart";
-heart.innerHTML="💖";
-
-heart.style.left=Math.random()*100+"vw";
-heart.style.top=Math.random()*100+"vh";
-
-document.body.appendChild(heart);
-
-setTimeout(()=>heart.remove(),1000);
-
-}
-
-}
+loveBtn.addEventListener("click",()=>{
+    message.innerHTML = `
+        💖 รักนะคะ 💖 <br><br>
+        รักนะคะ มายด์พินเซต ของพี่ 🥰
+    `;
+});
 
 </script>
 
