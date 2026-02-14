@@ -10,27 +10,50 @@
 
 body{
     margin:0;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg,#ffd6e7,#fff0f6);
+    overflow:hidden;
+}
+
+/* หน้าโหลด */
+#startScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    overflow:hidden;
+    flex-direction:column;
+    background:linear-gradient(135deg,#ffc1da,#ffe6f2);
+    z-index:10;
+}
+
+.gift{
+    font-size:80px;
+    cursor:pointer;
+    animation:jump 1.2s infinite;
+}
+
+@keyframes jump{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
 }
 
 /* กล่องหลัก */
 .container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
     background:white;
     padding:30px;
     border-radius:30px;
     text-align:center;
     box-shadow:0 15px 40px rgba(255,105,180,0.4);
     max-width:340px;
-    position:relative;
+    display:none;
 }
 
-/* มงกุฎ */
 .crown{
     font-size:30px;
     position:absolute;
@@ -39,26 +62,19 @@ body{
     transform:translateX(-50%);
 }
 
-/* รูปแฟน */
 .photo{
     width:230px;
     border-radius:20px;
     border:5px solid #fff;
     box-shadow:0 10px 25px rgba(255,105,180,0.5);
-    margin-bottom:15px;
 }
 
-/* หัวข้อ */
 h1{
     color:#ff4f8b;
-    font-size:23px;
-    margin:10px 0;
 }
 
-/* ข้อความ */
 p{
     color:#555;
-    font-size:15px;
 }
 
 /* ปุ่ม */
@@ -72,18 +88,13 @@ button{
     cursor:pointer;
     margin-top:15px;
     box-shadow:0 5px 15px rgba(255,105,180,0.4);
-    transition:0.3s;
-}
-
-button:hover{
-    transform:scale(1.08);
 }
 
 /* ปุ่มหัวใจ */
 .heartBtn{
-    font-size:30px;
-    cursor:pointer;
+    font-size:32px;
     margin-top:10px;
+    cursor:pointer;
     animation:pulse 1.5s infinite;
 }
 
@@ -93,13 +104,11 @@ button:hover{
     100%{transform:scale(1);}
 }
 
-/* ข้อความเซอร์ไพรส์ */
 .message{
     display:none;
     margin-top:15px;
     color:#ff4f8b;
     font-weight:bold;
-    font-size:16px;
 }
 
 /* หัวใจลอย */
@@ -110,9 +119,7 @@ button:hover{
 }
 
 @keyframes fall{
-    to{
-        transform:translateY(110vh);
-    }
+    to{ transform:translateY(110vh); }
 }
 
 </style>
@@ -120,12 +127,26 @@ button:hover{
 </head>
 <body>
 
-<!-- 🎵 เพลง -->
-<audio id="music" autoplay loop>
+<!-- เพลง -->
+<audio id="music" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container">
+<!-- หน้าเริ่ม -->
+<div id="startScreen">
+    <div style="font-size:22px;color:#ff4f8b;margin-bottom:20px;">
+        มีอะไรจะให้เจ้าหญิง 👑💖
+    </div>
+
+    <div class="gift" onclick="startLove()">🎁</div>
+
+    <div style="margin-top:15px;color:#ff4f8b;">
+        กดเพื่อเปิดของขวัญ
+    </div>
+</div>
+
+<!-- การ์ด -->
+<div class="container" id="mainCard">
 
 <div class="crown">👑</div>
 
@@ -150,31 +171,50 @@ button:hover{
 
 const music = document.getElementById("music");
 
-/* มือถือบางเครื่องต้องกดก่อน */
-document.body.addEventListener("click", () => {
-    music.play().catch(()=>{});
-}, { once:true });
+/* เริ่ม */
+function startLove(){
 
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("mainCard").style.display="block";
+
+    music.play();
+
+    burstHearts();
+}
+
+/* เล่นเพลง */
 function playMusic(){
     music.play();
 }
 
+/* ข้อความ */
 function showMessage(){
     document.getElementById("msg").style.display="block";
 }
 
-/* สร้างหัวใจลอย */
-setInterval(()=>{
+/* หัวใจพุ */
+function burstHearts(){
+    for(let i=0;i<40;i++){
+        setTimeout(()=>{
+            createHeart();
+        },i*80);
+    }
+}
+
+/* หัวใจลอย */
+function createHeart(){
     const heart=document.createElement("div");
     heart.className="heart";
     heart.innerHTML="💖";
     heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(Math.random()*20+15)+"px";
+    heart.style.fontSize=(Math.random()*25+15)+"px";
     heart.style.animationDuration=(Math.random()*3+2)+"s";
     document.body.appendChild(heart);
 
     setTimeout(()=>heart.remove(),5000);
-},300);
+}
+
+setInterval(createHeart,400);
 
 </script>
 
