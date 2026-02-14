@@ -205,36 +205,63 @@ const bgMusic = document.getElementById("bgMusic");
 
 loveBtn.onclick = () => {
 
-    // ลดเสียงเพลงเหลือ 10%
-    let originalVolume = bgMusic.volume;
-    let fadeOut = setInterval(() => {
-        if (bgMusic.volume > 0.1) {
-            bgMusic.volume -= 0.05;
+    // เด้งหนี 3 ครั้งก่อน
+    let moveCount = 0;
+
+    function moveLoveBtn() {
+        let x = Math.random() * (window.innerWidth - 120);
+        let y = Math.random() * (window.innerHeight - 80);
+
+        loveBtn.style.position = "absolute";
+        loveBtn.style.left = x + "px";
+        loveBtn.style.top = y + "px";
+
+        moveCount++;
+
+        if (moveCount < 3) {
+            setTimeout(moveLoveBtn, 300);
         } else {
-            bgMusic.volume = 0.1;
-            clearInterval(fadeOut);
+            loveBtn.style.display = "none"; // หายไป
+
+            showLoveMessage(); // แสดงข้อความ
         }
-    }, 20);
+    }
 
-    // เล่นเสียงพูด
-    loveSound.currentTime = 0;
-    loveSound.play();
+    moveLoveBtn();
 
-    // พอเสียงพูดจบ เพลงกลับดัง
-    loveSound.onended = () => {
 
-        let fadeIn = setInterval(() => {
-            if (bgMusic.volume < originalVolume) {
-                bgMusic.volume += 0.05;
+    function showLoveMessage() {
+
+        // ลดเสียงเพลงเหลือ 10%
+        let originalVolume = bgMusic.volume;
+        let fadeOut = setInterval(() => {
+            if (bgMusic.volume > 0.1) {
+                bgMusic.volume -= 0.05;
             } else {
-                bgMusic.volume = originalVolume;
-                clearInterval(fadeIn);
+                bgMusic.volume = 0.1;
+                clearInterval(fadeOut);
             }
-        }, 50);
-    };
+        }, 20);
 
-    message.style.display = "block";
-    message.innerHTML = `
+        // เล่นเสียงพูด
+        loveSound.currentTime = 0;
+        loveSound.play();
+
+        // พอเสียงพูดจบ เพลงกลับดัง
+        loveSound.onended = () => {
+
+            let fadeIn = setInterval(() => {
+                if (bgMusic.volume < originalVolume) {
+                    bgMusic.volume += 0.05;
+                } else {
+                    bgMusic.volume = originalVolume;
+                    clearInterval(fadeIn);
+                }
+            }, 50);
+        };
+
+        message.style.display = "block";
+        message.innerHTML = `
 <div style="
     background: linear-gradient(135deg,#ffd6e7,#ffe9f3);
     padding:20px;
@@ -277,9 +304,6 @@ loveBtn.onclick = () => {
 
 </div>
 `;
+    }
+
 };
-
-</script>
-
-</body>
-</html>
