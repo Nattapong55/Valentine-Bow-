@@ -204,64 +204,52 @@ const loveSound = document.getElementById("loveSound");
 const bgMusic = document.getElementById("bgMusic");
 
 loveBtn.onclick = () => {
+    // ฟังก์ชันเด้งหนี
+function moveLoveBtn() {
+    loveBtn.style.position = "fixed";
 
-    // เด้งหนี 3 ครั้งก่อน
-    let moveCount = 0;
+    let x = Math.random() * (window.innerWidth - 120);
+    let y = Math.random() * (window.innerHeight - 80);
 
-    function moveLoveBtn() {
-        let x = Math.random() * (window.innerWidth - 120);
-        let y = Math.random() * (window.innerHeight - 80);
+    loveBtn.style.left = x + "px";
+    loveBtn.style.top = y + "px";
+}
 
-        loveBtn.style.position = "absolute";
-        loveBtn.style.left = x + "px";
-        loveBtn.style.top = y + "px";
+function showLoveMessage() {
 
-        moveCount++;
-
-        if (moveCount < 3) {
-            setTimeout(moveLoveBtn, 300);
+    // ซ่อนปุ่ม
+    loveBtn.style.display = "none";
+    
+    // ลดเสียงเพลงเหลือ 10%
+    let originalVolume = bgMusic.volume;
+    let fadeOut = setInterval(() => {
+        if (bgMusic.volume > 0.1) {
+            bgMusic.volume -= 0.05;
         } else {
-            loveBtn.style.display = "none"; // หายไป
-
-            showLoveMessage(); // แสดงข้อความ
+            bgMusic.volume = 0.1;
+            clearInterval(fadeOut);
         }
-    }
+    }, 20);
 
-    moveLoveBtn();
+    // เล่นเสียงพูด
+    loveSound.currentTime = 0;
+    loveSound.play();
 
+    // พอเสียงพูดจบ เพลงกลับดัง
+    loveSound.onended = () => {
 
-    function showLoveMessage() {
-
-        // ลดเสียงเพลงเหลือ 10%
-        let originalVolume = bgMusic.volume;
-        let fadeOut = setInterval(() => {
-            if (bgMusic.volume > 0.1) {
-                bgMusic.volume -= 0.05;
+        let fadeIn = setInterval(() => {
+            if (bgMusic.volume < originalVolume) {
+                bgMusic.volume += 0.05;
             } else {
-                bgMusic.volume = 0.1;
-                clearInterval(fadeOut);
+                bgMusic.volume = originalVolume;
+                clearInterval(fadeIn);
             }
-        }, 20);
+        }, 50);
+    };
 
-        // เล่นเสียงพูด
-        loveSound.currentTime = 0;
-        loveSound.play();
-
-        // พอเสียงพูดจบ เพลงกลับดัง
-        loveSound.onended = () => {
-
-            let fadeIn = setInterval(() => {
-                if (bgMusic.volume < originalVolume) {
-                    bgMusic.volume += 0.05;
-                } else {
-                    bgMusic.volume = originalVolume;
-                    clearInterval(fadeIn);
-                }
-            }, 50);
-        };
-
-        message.style.display = "block";
-        message.innerHTML = `
+    message.style.display = "block";
+    message.innerHTML = `
 <div style="
     background: linear-gradient(135deg,#ffd6e7,#ffe9f3);
     padding:20px;
@@ -304,6 +292,9 @@ loveBtn.onclick = () => {
 
 </div>
 `;
-    }
-
 };
+
+</script>
+
+</body>
+</html>
