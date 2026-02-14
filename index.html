@@ -19,7 +19,7 @@ body{
     overflow:hidden;
 }
 
-/* กล่อง */
+/* กล่องหลัก */
 .container{
     background:white;
     padding:30px;
@@ -60,6 +60,11 @@ button{
     cursor:pointer;
     margin-top:15px;
     box-shadow:0 5px 15px rgba(255,105,180,0.4);
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.08);
 }
 
 .message{
@@ -104,9 +109,9 @@ input{
 </style>
 </head>
 
-<body onclick="firstTouch()">
+<body>
 
-<div class="container" id="content" style="display:none;">
+<div class="container">
 
 <div class="crown">👑</div>
 
@@ -116,7 +121,7 @@ input{
 
 <p>ขอบคุณที่เข้ามาเป็นรอยยิ้มของเค้า ❤️</p>
 
-<button onclick="showMessage()">กดดูเซอร์ไพรส์ 🎁</button>
+<button onclick="start()">กดรับเซอร์ไพรส์ 🎁</button>
 
 <div class="message" id="msg">
 
@@ -145,16 +150,24 @@ input{
 
 const music = document.getElementById("music");
 
-/* แตะครั้งแรกให้เพลงเล่น */
-function firstTouch(){
-    document.getElementById("content").style.display="block";
-    music.play().catch(()=>{});
+/* เริ่มเพลง */
+function start(){
+
+    music.play().then(()=>{
+        console.log("เล่นเพลงแล้ว");
+    }).catch(err=>{
+        console.log("ยังไม่อนุญาต", err);
+    });
+
+    showMessage();
 }
+
 
 /* เปิดข้อความ */
 function showMessage(){
     document.getElementById("msg").style.display="block";
 }
+
 
 /* ตรวจคำตอบ */
 function checkLove(){
@@ -164,12 +177,11 @@ function checkLove(){
     if(text.includes("รัก")){
 
         explodeHearts();
-
         alert("เค้ารู้แล้วว่าโบว์รัก 😍💖");
 
     }else if(text.includes("ไม่")){
 
-        alert("ไม่รักจริงหรอ 😭");
+        runAwayButton();
 
     }else{
 
@@ -179,10 +191,18 @@ function checkLove(){
 }
 
 
+/* ปุ่มหนี */
+function runAwayButton(){
+
+    alert("ไม่รักจริงหรอ 😭");
+
+}
+
+
 /* หัวใจระเบิด */
 function explodeHearts(){
 
-    for(let i=0;i<40;i++){
+    for(let i=0;i<50;i++){
 
         let heart=document.createElement("div");
         heart.className="bigHeart";
@@ -195,7 +215,6 @@ function explodeHearts(){
 
         setTimeout(()=>heart.remove(),1000);
     }
-
 }
 
 
