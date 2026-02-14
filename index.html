@@ -38,6 +38,7 @@ body{
     margin-bottom:15px;
 }
 
+/* ปุ่ม */
 button{
     background:linear-gradient(45deg,#ff4f8b,#ff7aa8);
     border:none;
@@ -93,6 +94,12 @@ button{
     to{transform:scale(3);opacity:0;}
 }
 
+#msg{
+    margin-top:15px;
+    color:#ff4f8b;
+    font-weight:bold;
+}
+
 </style>
 </head>
 
@@ -133,7 +140,29 @@ const noBtn=document.getElementById("noBtn");
 
 let speed=1;
 
-/* เริ่ม */
+
+/* =========================
+   ฟังก์ชันเล่นเพลง (เสถียร)
+========================= */
+
+function playMusic(){
+
+    music.volume = 1;
+
+    const playPromise = music.play();
+
+    if(playPromise !== undefined){
+        playPromise.catch(()=>{
+            console.log("ต้องกดก่อนถึงจะเล่น");
+        });
+    }
+}
+
+
+/* =========================
+   เริ่มเว็บ
+========================= */
+
 function startApp(){
 
 if(started) return;
@@ -147,6 +176,7 @@ time--;
 countdown.innerText=time;
 
 if(time<=0){
+
 clearInterval(timer);
 
 countdown.style.display="none";
@@ -160,15 +190,18 @@ moveNo();
 
 }
 
-/* เล่นเพลง */
-function playMusic(){
-music.play().catch(()=>{});
-}
 
-/* ปุ่มเพลง */
+/* =========================
+   ปุ่มเปิดเพลง
+========================= */
+
 musicBtn.onclick=playMusic;
 
-/* กลับหน้าเว็บหลังรับสาย */
+
+/* =========================
+   กลับเข้าเว็บหลังโทรศัพท์
+========================= */
+
 document.addEventListener("visibilitychange",()=>{
 
 if(!document.hidden){
@@ -177,7 +210,17 @@ playMusic();
 
 });
 
-/* ปุ่มไม่รักหนี */
+window.addEventListener("focus",()=>{
+
+playMusic();
+
+});
+
+
+/* =========================
+   ปุ่มไม่รักหนี
+========================= */
+
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("click",moveNo);
 
@@ -194,11 +237,17 @@ noBtn.style.top=y+"px";
 
 }
 
-/* ปุ่มรัก */
+
+/* =========================
+   ปุ่มรัก
+========================= */
+
 loveBtn.onclick=()=>{
 
+playMusic();
+
 document.getElementById("msg").innerHTML=
-"💖 รักนะคะ มายด์พินเซต ของพี่ 💖";
+"💖 รักนะคะ มายด์พินเซตของพี่ 💕<br>ขอบคุณที่เข้ามาเป็นความสุขของพี่นะ 🥰";
 
 for(let i=0;i<40;i++){
 
