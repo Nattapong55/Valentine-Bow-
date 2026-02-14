@@ -3,137 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine ❤️</title>
+<title>ถึงโบ 💖</title>
 
 <style>
-body{
-    font-family: Arial, sans-serif;
-    text-align:center;
-    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
-    overflow:hidden;
+body {
+    margin: 0;
+    font-family: "Prompt", sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ff9a9e, #fecfef);
+    overflow: hidden;
 }
 
-#countdown{
-    font-size:60px;
-    color:white;
-    margin-top:100px;
+.container {
+    margin-top: 40px;
 }
 
-.box{
-    background:white;
-    padding:20px;
-    border-radius:20px;
-    display:inline-block;
-    margin-top:30px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+img {
+    width: 220px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-img{
-    width:220px;
-    border-radius:15px;
+h1 {
+    color: white;
+    font-size: 28px;
 }
 
-button{
-    padding:15px 25px;
-    font-size:18px;
-    border:none;
-    border-radius:15px;
-    cursor:pointer;
-    margin:10px;
-    position:absolute;
+button {
+    padding: 14px 26px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 10px;
 }
 
-#loveBtn{
-    background:#ff4d6d;
-    color:white;
+#loveBtn {
+    background: #ff4d6d;
+    color: white;
 }
 
-#noLoveBtn{
-    background:#666;
-    color:white;
-    animation:shake 0.2s infinite;
+#noBtn {
+    background: white;
+    color: #ff4d6d;
+    position: relative;
 }
 
-@keyframes shake{
-    0%{transform:translate(1px,1px);}
-    25%{transform:translate(-1px,2px);}
-    50%{transform:translate(-3px,1px);}
-    75%{transform:translate(2px,-1px);}
-    100%{transform:translate(1px,-2px);}
+input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 220px;
+    text-align: center;
+    font-size: 16px;
 }
 
-#message{
-    font-size:22px;
-    color:#ff4d6d;
-    margin-top:20px;
+#message {
+    color: yellow;
+    font-size: 22px;
+    margin-top: 10px;
+    display: none;
 }
-
 </style>
 </head>
 
 <body>
 
-<div id="countdown">20</div>
+<div class="container">
 
-<div id="main" style="display:none;">
-    <div class="box">
-        <img src="bow.png">
-        <h2>เค้าถามอะไรหน่อยได้ไหม 🥺</h2>
-        <div id="message"></div>
-    </div>
+    <img src="bow.jpg" alt="Bow">
+
+    <h1>โบรักพี่ไหม ❤️</h1>
+
+    <input id="answerInput" placeholder="พิมพ์คำตอบ..." />
+    <br><br>
 
     <button id="loveBtn">รัก 💖</button>
-    <button id="noLoveBtn">ไม่รัก 😭</button>
+    <button id="noBtn">ไม่รัก 😝</button>
+
+    <div id="message">ไม่ให้ปฏิเสธหรอก 😝</div>
+
 </div>
 
-<audio id="music" src="music.mp3"></audio>
+<audio id="bgMusic" src="music.mp3"></audio>
 
-<script>
+<audio id="boing">
+<source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+</audio>
 
-let time = 20;
-let countdownEl = document.getElementById("countdown");
-let main = document.getElementById("main");
-let music = document.getElementById("music");
+<script type="module">
 
-let loveBtn = document.getElementById("loveBtn");
-let noLoveBtn = document.getElementById("noLoveBtn");
-let message = document.getElementById("message");
+// ================= FIREBASE =================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-let timer = setInterval(()=>{
-    time--;
-    countdownEl.innerHTML = time;
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DB",
+  projectId: "YOUR_ID",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_MSG",
+  appId: "YOUR_APP"
+};
 
-    if(time<=0){
-        clearInterval(timer);
-        countdownEl.style.display="none";
-        main.style.display="block";
-        music.play();
-        showButtons();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ================= ELEMENT =================
+const loveBtn = document.getElementById("loveBtn");
+const noBtn = document.getElementById("noBtn");
+const music = document.getElementById("bgMusic");
+const boing = document.getElementById("boing");
+const input = document.getElementById("answerInput");
+const message = document.getElementById("message");
+
+
+// ================= หัวใจระเบิด =================
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.top = window.innerHeight + "px";
+    heart.style.fontSize = (20 + Math.random() * 40) + "px";
+    heart.style.animation = "floatUp 3s linear forwards";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 3000);
+}
+
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes floatUp {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}`;
+document.head.appendChild(style);
+
+
+// ================= ปุ่มรัก =================
+loveBtn.onclick = () => {
+
+    music.play().catch(()=>{});
+
+    for(let i=0;i<40;i++){
+        setTimeout(createHeart, i*80);
     }
-},1000);
 
-function randomMove(btn){
-    let x = Math.random()*(window.innerWidth-120);
-    let y = Math.random()*(window.innerHeight-60);
-    btn.style.left = x+"px";
-    btn.style.top = y+"px";
+    const text = input.value || "รัก";
+
+    push(ref(db, "answers"), {
+        text: text,
+        time: Date.now()
+    });
+
+    alert("เย้ 💖 รู้แล้วว่ารัก");
+};
+
+
+// ================= ปุ่มไม่รักปั่น =================
+
+let speed = 800;
+
+function moveButton() {
+
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    boing.play();
+
+    message.style.display = "block";
+
+    if(speed > 100){
+        speed -= 80;
+    }
 }
 
-function showButtons(){
-    randomMove(loveBtn);
-    randomMove(noLoveBtn);
-}
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
 
-noLoveBtn.addEventListener("mouseover",()=>{
-    randomMove(noLoveBtn);
-});
 
-loveBtn.addEventListener("click",()=>{
-    message.innerHTML = `
-        💖 รักนะคะ 💖 <br><br>
-        รักนะคะ มายด์พินเซต ของพี่ 🥰
-    `;
-});
+// เด้งเร็วขึ้นเรื่อย ๆ
+setInterval(() => {
+    moveButton();
+}, speed);
+
 
 </script>
 
