@@ -8,7 +8,7 @@
 <style>
 body {
     font-family: "Prompt", sans-serif;
-    background: #ff9ecb; /* พื้นหลังชมพู */
+    background: #ff9ecb;
     margin: 0;
     overflow: hidden;
     text-align: center;
@@ -59,9 +59,8 @@ body {
     padding-top: 40px;
 }
 
-/* แก้ภาพไม่ขึ้น */
+/* รูป */
 img {
-    img {
     width: 250px;
     height: 250px;
     object-fit: cover;
@@ -69,6 +68,12 @@ img {
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     display: block;
     margin: auto;
+}
+
+/* animation เด้ง */
+@keyframes pop {
+    0% { transform: scale(0.8); opacity:0; }
+    100% { transform: scale(1); opacity:1; }
 }
 
 /* สั่น */
@@ -100,15 +105,12 @@ img {
 
 <body>
 
-<!-- หน้าโหลด -->
 <div id="loading">
     💗 ที่รักกรุณารอสักครู่... <br>
     <span id="count">20</span>
-
     <button id="musicControl">🎵</button>
 </div>
 
-<!-- เนื้อหา -->
 <div id="content">
     <h1>💖 Happy Valentine 💖</h1>
 
@@ -124,19 +126,16 @@ img {
     <div id="message"></div>
 </div>
 
-<!-- เพลง -->
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- เสียงพูด -->
 <audio id="loveSound">
     <source src="love.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-///// เพลงพื้นหลัง + เริ่มนับถอยหลังเมื่อกด
 const music = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicControl");
 
@@ -162,8 +161,6 @@ musicBtn.onclick = () => {
     }
 };
 
-
-///// นับถอยหลัง
 function startCountdown() {
 
     let time = 20;
@@ -184,8 +181,6 @@ function startCountdown() {
     }, 1000);
 }
 
-
-///// ปุ่มไม่รักเด้ง + สั่น
 const noBtn = document.getElementById("noLoveBtn");
 
 function moveButton() {
@@ -203,8 +198,6 @@ function startNoLoveMove() {
     noBtn.addEventListener("click", moveButton);
 }
 
-
-///// ปุ่มรัก
 const loveBtn = document.getElementById("loveBtn");
 const message = document.getElementById("message");
 const loveSound = document.getElementById("loveSound");
@@ -212,12 +205,13 @@ const bgMusic = document.getElementById("bgMusic");
 
 loveBtn.onclick = () => {
 
-    // ลดเสียงเพลงพื้นหลัง
+    // ลดเสียงเพลงเหลือ 10%
     let originalVolume = bgMusic.volume;
     let fadeOut = setInterval(() => {
         if (bgMusic.volume > 0.1) {
             bgMusic.volume -= 0.05;
         } else {
+            bgMusic.volume = 0.1;
             clearInterval(fadeOut);
         }
     }, 20);
@@ -226,7 +220,7 @@ loveBtn.onclick = () => {
     loveSound.currentTime = 0;
     loveSound.play();
 
-    // พอเสียงพูดจบ ให้เพลงดังกลับ
+    // พอเสียงพูดจบ เพลงกลับดัง
     loveSound.onended = () => {
 
         let fadeIn = setInterval(() => {
@@ -240,8 +234,7 @@ loveBtn.onclick = () => {
     };
 
     message.style.display = "block";
-    message.innerHTML = message.style.display = "block";
-message.innerHTML = `
+    message.innerHTML = `
 <div style="
     background: linear-gradient(135deg,#ffd6e7,#ffe9f3);
     padding:20px;
@@ -253,6 +246,7 @@ message.innerHTML = `
     border:3px solid rgba(255,255,255,0.6);
     position:relative;
     overflow:hidden;
+    animation: pop 0.4s ease;
 ">
 
 ✨👑 💕 รักนะคะ My Princess ของพี่ 💕 👑✨<br><br>
