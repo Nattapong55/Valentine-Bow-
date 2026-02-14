@@ -63,38 +63,11 @@ body {
 img {
     img {
     width: 250px;
-    height: 250px;
-    object-fit: cover;
     border-radius: 20px;
-    display: block;
-    margin: auto;
-    position: relative;
-    z-index: 1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+2 hours ago
 
-    /* ขอบขาวนุ่ม */
-    border: 5px solid rgba(255,255,255,0.85);
-
-    /* เงาชมพูฟุ้ง */
-    box-shadow:
-        0 0 20px rgba(255,182,193,0.7),
-        0 10px 25px rgba(0,0,0,0.25);
-
-    /* เรืองแสงเบา ๆ */
-    animation: glow 2.5s infinite alternate ease-in-out;
-}
-
-/* แสงวิ้ง */
-@keyframes glow {
-    from {
-        box-shadow:
-            0 0 15px rgba(255,182,193,0.5),
-            0 10px 25px rgba(0,0,0,0.25);
-    }
-    to {
-        box-shadow:
-            0 0 30px rgba(255,192,203,0.9),
-            0 10px 25px rgba(0,0,0,0.25);
-    }
+Update index.html
 }
 
 /* สั่น */
