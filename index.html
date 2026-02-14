@@ -148,17 +148,26 @@ button {
 
 <script>
 
-///// เพลงพื้นหลัง
+///// เพลงพื้นหลัง + เริ่มนับถอยหลังเมื่อกด
 const music = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicControl");
 
 let playing = false;
+let timerStarted = false;
 
 musicBtn.onclick = () => {
+
     if (!playing) {
         music.play();
         musicBtn.innerText = "🔊";
         playing = true;
+
+        // เริ่มนับถอยหลังครั้งแรกตอนกดเพลง
+        if (!timerStarted) {
+            startCountdown();
+            timerStarted = true;
+        }
+
     } else {
         music.pause();
         musicBtn.innerText = "🎵";
@@ -167,22 +176,26 @@ musicBtn.onclick = () => {
 };
 
 
-///// นับถอยหลังหน้าโหลด
-let time = 20;
-let countEl = document.getElementById("count");
+///// นับถอยหลัง
+function startCountdown() {
 
-let timer = setInterval(() => {
-    time--;
-    countEl.innerText = time;
+    let time = 20;
+    let countEl = document.getElementById("count");
 
-    if (time <= 0) {
-        clearInterval(timer);
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("content").style.display = "block";
+    let timer = setInterval(() => {
+        time--;
+        countEl.innerText = time;
 
-        startNoLoveMove();
-    }
-}, 1000);
+        if (time <= 0) {
+            clearInterval(timer);
+
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("content").style.display = "block";
+
+            startNoLoveMove();
+        }
+    }, 1000);
+}
 
 
 ///// ปุ่มไม่รักเด้ง + สั่น
@@ -228,4 +241,4 @@ loveBtn.onclick = () => {
 </script>
 
 </body>
-</html>
+</html>ๅ
