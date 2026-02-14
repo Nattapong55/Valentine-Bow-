@@ -3,110 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Princess Bow 💖</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500&display=swap" rel="stylesheet">
+<title>ถึงโบว์ เจ้าหญิงของเค้า 👑💖</title>
 
 <style>
 body{
-  margin:0;
-  font-family:'Prompt',sans-serif;
-  text-align:center;
-  background:linear-gradient(135deg,#ffd6ec,#ffe9f6,#fff);
-  overflow:hidden;
+    margin:0;
+    font-family: 'Prompt', sans-serif;
+    background: linear-gradient(135deg,#ffd6e7,#ffeef5);
+    overflow:hidden;
 }
 
-.container{
-  padding:30px;
+/* โหลดก่อนเข้าเว็บ */
+#loader{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#ffb6d5;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    color:white;
+    font-size:24px;
+    z-index:999;
 }
 
-h1{
-  color:#ff4da6;
-  font-size:28px;
+.card{
+    background:white;
+    width:90%;
+    max-width:350px;
+    margin:80px auto;
+    border-radius:25px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(255,105,180,0.4);
 }
 
-img{
-  width:220px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(255,105,180,0.4);
+.card img{
+    width:100%;
+    border-radius:20px;
 }
 
-button{
-  margin-top:20px;
-  padding:15px 25px;
-  font-size:18px;
-  border:none;
-  border-radius:30px;
-  background:linear-gradient(45deg,#ff4da6,#ff85c1);
-  color:white;
-  cursor:pointer;
-  box-shadow:0 5px 15px rgba(255,105,180,0.5);
+/* ปุ่มหัวใจ */
+.heartBtn{
+    margin-top:15px;
+    padding:15px 25px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(45deg,#ff4d88,#ff99cc);
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 5px 15px rgba(255,0,100,0.4);
 }
 
-button:hover{
-  transform:scale(1.05);
+/* กล่องของขวัญ */
+.gift{
+    font-size:60px;
+    cursor:pointer;
+    margin-top:10px;
 }
 
-/* หัวใจลอย */
+/* เอฟเฟกต์หัวใจลอย */
 .heart{
-  position:fixed;
-  color:pink;
-  font-size:20px;
-  animation:float 6s linear infinite;
+    position:fixed;
+    color:pink;
+    font-size:20px;
+    animation:float 4s linear infinite;
 }
 
 @keyframes float{
-  0%{transform:translateY(100vh) scale(0);}
-  100%{transform:translateY(-10vh) scale(1.5);}
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>💖 Happy Valentine Princess Bow 👑</h1>
-
-<img src="bow.jpg">
-
-<p>
-โบว์คือเจ้าหญิงของเค้าเสมอ 🥺💗<br>
-รักที่สุดในโลกเลยนะ 💕
-</p>
-
-<button onclick="startLove()">💘 กดหัวใจของเรา 💘</button>
-
+<div id="loader">
+👑 กำลังเข้าสู่โลกของเจ้าหญิง...
+💖
 </div>
 
-<audio id="music" autoplay loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+<audio id="music" src="music.mp3" autoplay loop></audio>
+
+<div class="card" style="display:none;" id="mainCard">
+    <img src="bow.jpg">
+
+    <h2>สุขสันต์วันวาเลนไทน์นะ โบว์ 💕</h2>
+    <p>ขอบคุณที่เข้ามาเป็นรอยยิ้มของเค้าในทุก ๆ วัน ❤️</p>
+
+    <div class="gift" onclick="openGift()">🎁</div>
+
+    <button class="heartBtn" onclick="playMusic()">💗 กดหัวใจของเค้า</button>
+
+    <p id="msg"></p>
+</div>
 
 <script>
 let music = document.getElementById("music");
 
-function startLove(){
-  music.play();
-
-  alert("เซอร์ไพรส์ 💖 รักโบว์ที่สุดเลยนะ 👑");
-
-  for(let i=0;i<20;i++){
-    let heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💖";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(20+Math.random()*30)+"px";
-    document.body.appendChild(heart);
-
-    setTimeout(()=>heart.remove(),6000);
-  }
+function playMusic(){
+    music.play();
+    spawnHearts();
+    document.getElementById("msg").innerHTML =
+    "เค้ารักโบว์ที่สุดในโลกเลย 💖 อยู่ด้วยกันไปนาน ๆ นะ 👑";
 }
 
-// เผื่อมือถือบล็อก autoplay
-document.addEventListener("click",()=>{
-  music.play();
-});
+function openGift(){
+    alert("เซอร์ไพรส์ 💝 เค้ารักโบว์นะ");
+}
+
+function spawnHearts(){
+    setInterval(()=>{
+        let heart=document.createElement("div");
+        heart.className="heart";
+        heart.innerHTML="💖";
+        heart.style.left=Math.random()*100+"vw";
+        document.body.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),4000);
+    },300);
+}
+
+/* โหลด 3 วิแล้วเข้าเว็บ + เพลงเล่น */
+setTimeout(()=>{
+    document.getElementById("loader").style.display="none";
+    document.getElementById("mainCard").style.display="block";
+    music.play().catch(()=>{});
+    spawnHearts();
+},3000);
 </script>
 
 </body>
