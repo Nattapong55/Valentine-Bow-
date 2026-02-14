@@ -2,46 +2,75 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>For Bow ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ถึงโบว์ จากคนที่รักที่สุด ❤️</title>
 
 <style>
-body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(45deg,#ff9a9e,#fad0c4);
-    font-family:sans-serif;
-    overflow:hidden;
+body {
+    margin: 0;
+    font-family: "Prompt", sans-serif;
+    background: linear-gradient(135deg, #ffd1dc, #ffe4ec);
+    overflow: hidden;
+    text-align: center;
 }
 
-h1{
-    color:white;
-    font-size:50px;
-    text-align:center;
+.container {
+    background: white;
+    padding: 25px;
+    margin: 40px auto;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
 }
 
-button{
-    padding:15px 30px;
-    font-size:20px;
-    border:none;
-    border-radius:30px;
-    background:white;
-    color:#ff4d6d;
-    cursor:pointer;
+.photo {
+    width: 100%;
+    border-radius: 20px;
+    border: 6px solid #ff9ecb;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.heart{
-    position:fixed;
-    top:-10px;
-    color:red;
-    animation:fall 5s linear infinite;
+h1 {
+    color: #ff4d88;
 }
 
-@keyframes fall{
-    to{
-        transform:translateY(100vh);
+button {
+    background: #ff4d88;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-size: 18px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ff2f73;
+}
+
+.message {
+    display: none;
+    margin-top: 15px;
+    font-size: 18px;
+    color: #444;
+}
+
+/* หัวใจตก */
+.heart {
+    position: fixed;
+    top: -10px;
+    color: red;
+    font-size: 20px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
     }
 }
 </style>
@@ -49,29 +78,44 @@ button{
 
 <body>
 
-<div>
-<h1>โบ ❤️</h1>
-<h2 style="color:white">สุขสันต์วันวาเลนไทน์นะ</h2>
-<button onclick="love()">กดตรงนี้สิ</button>
+<div class="container">
+
+    <!-- 🔥 ใส่รูปตรงนี้ -->
+    <img src="https://i.imgur.com/0y0y0y0.jpg" class="photo">
+
+    <h1>สุขสันต์วันวาเลนไทน์นะ โบว์ 💕</h1>
+
+    <p>ขอบคุณที่เข้ามาเป็นรอยยิ้มของเราในทุก ๆ วัน ❤️</p>
+
+    <button onclick="showMessage()">กดดูเซอร์ไพรส์ 💌</button>
+
+    <div class="message" id="msg">
+        เรารักโบว์ที่สุดในโลกเลยนะ 💖<br>
+        อยู่ด้วยกันแบบนี้ไปนาน ๆ นะ 🥰
+    </div>
+
 </div>
 
 <script>
-function love(){
-    alert("รักโบที่สุดเลย 💕");
+function showMessage() {
+    document.getElementById("msg").style.display = "block";
 }
 
-function createHeart(){
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=Math.random()*20+20+"px";
+// สร้างหัวใจตก
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
     document.body.appendChild(heart);
 
-    setTimeout(()=>heart.remove(),5000);
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
 }
 
-setInterval(createHeart,300);
+setInterval(createHeart, 300);
 </script>
 
 </body>
