@@ -236,15 +236,40 @@ function startNoLoveMove() {
 const loveBtn = document.getElementById("loveBtn");
 const message = document.getElementById("message");
 const loveSound = document.getElementById("loveSound");
+const bgMusic = document.getElementById("bgMusic");
 
 loveBtn.onclick = () => {
 
+    // ลดเสียงเพลงพื้นหลัง
+    let originalVolume = bgMusic.volume;
+    let fadeOut = setInterval(() => {
+        if (bgMusic.volume > 0.2) {
+            bgMusic.volume -= 0.05;
+        } else {
+            clearInterval(fadeOut);
+        }
+    }, 50);
+
+    // เล่นเสียงพูด
     loveSound.currentTime = 0;
     loveSound.play();
 
+    // พอเสียงพูดจบ ให้เพลงดังกลับ
+    loveSound.onended = () => {
+
+        let fadeIn = setInterval(() => {
+            if (bgMusic.volume < originalVolume) {
+                bgMusic.volume += 0.05;
+            } else {
+                bgMusic.volume = originalVolume;
+                clearInterval(fadeIn);
+            }
+        }, 50);
+    };
+
     message.style.display = "block";
     message.innerHTML = `
-    💕 รักนะคะ My Priness ของพี่ 💕<br><br>
+    💕 รักนะคะ My Princess ของพี่ 💕<br><br>
     ขอให้หนูมีความสุขในทุกวันเลยนะ<br>
     อยู่ข้างพี่แบบนี้ไปนาน ๆ เลย<br>
     พี่จะดูแลหนูให้ดีที่สุดเท่าที่พี่จะทำได้<br>
