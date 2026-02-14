@@ -8,7 +8,7 @@
 <style>
 body {
     font-family: "Prompt", sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background: #ff9ecb; /* พื้นหลังชมพู */
     margin: 0;
     overflow: hidden;
     text-align: center;
@@ -20,13 +20,24 @@ body {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: #ff6b81;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     font-size: 40px;
     z-index: 10;
+    overflow: hidden;
+}
+
+/* ภาพเบลอพื้นหลังตอนรอ */
+#loading::before {
+    content: "";
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    background: url("bow.jpg") center/cover no-repeat;
+    filter: blur(15px) brightness(0.7);
+    z-index: -1;
 }
 
 /* ปุ่มเพลงตอนโหลด */
@@ -48,10 +59,15 @@ body {
     padding-top: 40px;
 }
 
+/* แก้ภาพไม่ขึ้น */
 img {
     width: 250px;
+    height: 250px;
+    object-fit: cover;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    display: block;
+    margin: auto;
 }
 
 /* คำถาม */
@@ -114,7 +130,7 @@ button {
 
 <!-- หน้าโหลด -->
 <div id="loading">
-    ⏳ กรุณารอสักครู่... <br>
+    💗 ที่รักกรุณารอสักครู่... <br>
     <span id="count">20</span>
 
     <button id="musicControl">🎵</button>
@@ -124,7 +140,7 @@ button {
 <div id="content">
     <h1>💖 สำหรับคนพิเศษ 💖</h1>
 
-    <img src="photo.jpg" alt="แฟน">
+    <img src="bow.jpg" alt="แฟน">
 
     <div id="question">รักพี่ไหม? 💕</div>
 
@@ -162,7 +178,6 @@ musicBtn.onclick = () => {
         musicBtn.innerText = "🔊";
         playing = true;
 
-        // เริ่มนับถอยหลังครั้งแรกตอนกดเพลง
         if (!timerStarted) {
             startCountdown();
             timerStarted = true;
@@ -241,4 +256,4 @@ loveBtn.onclick = () => {
 </script>
 
 </body>
-</html>ๅ
+</html>
