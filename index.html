@@ -3,198 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ถึงโบ 💖</title>
+
+<title>ถึงโบว์ เจ้าหญิงของเค้า 👑💖</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: "Prompt", sans-serif;
-    text-align: center;
-    background: linear-gradient(135deg, #ff9a9e, #fecfef);
-    overflow: hidden;
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#ff9ec4,#ffcce0);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
 }
 
-.container {
-    margin-top: 40px;
+/* กล่อง */
+.container{
+    background:white;
+    padding:30px;
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(255,105,180,0.4);
+    max-width:350px;
+    position:relative;
 }
 
-img {
-    width: 220px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+.crown{
+    font-size:30px;
+    position:absolute;
+    top:-20px;
+    left:50%;
+    transform:translateX(-50%);
 }
 
-h1 {
-    color: white;
-    font-size: 28px;
+.photo{
+    width:230px;
+    border-radius:20px;
+    border:5px solid #fff;
+    box-shadow:0 10px 25px rgba(255,105,180,0.5);
+    margin-bottom:15px;
 }
 
-button {
-    padding: 14px 26px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    margin: 10px;
+button{
+    background:linear-gradient(45deg,#ff4f8b,#ff7aa8);
+    border:none;
+    color:white;
+    padding:12px 22px;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+    margin:10px;
+    box-shadow:0 5px 15px rgba(255,105,180,0.4);
 }
 
-#loveBtn {
-    background: #ff4d6d;
-    color: white;
+#noBtn{
+    position:absolute;
 }
 
-#noBtn {
-    background: white;
-    color: #ff4d6d;
-    position: relative;
+.heart{
+    position:fixed;
+    top:-10px;
+    animation:fall linear infinite;
 }
 
-input {
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    width: 220px;
-    text-align: center;
-    font-size: 16px;
+@keyframes fall{
+    to{ transform:translateY(110vh); }
 }
 
-#message {
-    color: yellow;
-    font-size: 22px;
-    margin-top: 10px;
-    display: none;
+.bigHeart{
+    position:fixed;
+    font-size:30px;
+    animation:boom 1s linear forwards;
 }
+
+@keyframes boom{
+    from{transform:scale(0);opacity:1;}
+    to{transform:scale(3);opacity:0;}
+}
+
+/* countdown */
+#countdown{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:80px;
+    color:white;
+    font-weight:bold;
+    display:none;
+    text-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
 </style>
 </head>
 
-<body>
+<body onclick="firstTouch()">
 
-<div class="container">
+<div class="container" id="content" style="display:none;">
 
-    <img src="bow.jpg" alt="Bow">
+<div class="crown">👑</div>
 
-    <h1>โบรักพี่ไหม ❤️</h1>
+<img src="bow.jpg" class="photo">
 
-    <input id="answerInput" placeholder="พิมพ์คำตอบ..." />
-    <br><br>
+<h2>สุขสันต์วันวาเลนไทน์นะ โบว์ 💖</h2>
 
-    <button id="loveBtn">รัก 💖</button>
-    <button id="noBtn">ไม่รัก 😝</button>
+<p>เค้ารักโบว์ที่สุดในโลกเลยนะ 💕</p>
 
-    <div id="message">ไม่ให้ปฏิเสธหรอก 😝</div>
+<input type="text" id="answer" placeholder="พิมพ์คำตอบตรงนี้">
+
+<br>
+
+<button id="loveBtn">รัก 💖</button>
+<button id="noBtn">ไม่รัก 😝</button>
 
 </div>
 
-<audio id="bgMusic" src="music.mp3"></audio>
+<div id="countdown">10</div>
 
-<audio id="boing">
-<source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
-</audio>
+<audio id="music" src="music.mp3" preload="auto"></audio>
 
+<!-- Firebase -->
 <script type="module">
 
-// ================= FIREBASE =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "YOUR_KEY",
   authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DB",
+  databaseURL: "YOUR_DB_URL",
   projectId: "YOUR_ID",
   storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_MSG",
-  appId: "YOUR_APP"
+  messagingSenderId: "YOUR_MSG_ID",
+  appId: "YOUR_APP_ID"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ================= ELEMENT =================
+const music = document.getElementById("music");
 const loveBtn = document.getElementById("loveBtn");
 const noBtn = document.getElementById("noBtn");
-const music = document.getElementById("bgMusic");
-const boing = document.getElementById("boing");
-const input = document.getElementById("answerInput");
-const message = document.getElementById("message");
+const input = document.getElementById("answer");
 
+let noSpeed = 1;
 
-// ================= หัวใจระเบิด =================
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.innerHTML = "💖";
-    heart.style.position = "fixed";
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.top = window.innerHeight + "px";
-    heart.style.fontSize = (20 + Math.random() * 40) + "px";
-    heart.style.animation = "floatUp 3s linear forwards";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 3000);
+/* แตะหน้าจอครั้งแรก */
+window.firstTouch = function(){
+    document.getElementById("content").style.display="block";
+    music.play().catch(()=>{});
 }
 
-const style = document.createElement('style');
-style.innerHTML = `
-@keyframes floatUp {
-  to {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
-}`;
-document.head.appendChild(style);
+/* ปุ่มไม่รัก หนีเร็วขึ้น */
+noBtn.onclick = () => {
 
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
 
-// ================= ปุ่มรัก =================
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    noSpeed += 0.5;
+    noBtn.style.transition = 0.2 / noSpeed + "s";
+};
+
+/* ปุ่มรัก */
 loveBtn.onclick = () => {
 
     music.play().catch(()=>{});
 
-    for(let i=0;i<40;i++){
-        setTimeout(createHeart, i*80);
-    }
+    loveBtn.disabled = true;
+    noBtn.disabled = true;
 
-    const text = input.value || "รัก";
+    const countdownEl = document.getElementById("countdown");
 
-    push(ref(db, "answers"), {
-        text: text,
-        time: Date.now()
-    });
+    let timeLeft = 10;
+    countdownEl.style.display = "block";
+    countdownEl.innerText = timeLeft;
 
-    alert("เย้ 💖 รู้แล้วว่ารัก");
+    const timer = setInterval(() => {
+
+        timeLeft--;
+        countdownEl.innerText = timeLeft;
+
+        if(timeLeft <= 0){
+            clearInterval(timer);
+
+            countdownEl.style.display = "none";
+
+            for(let i=0;i<40;i++){
+                setTimeout(createHeart, i*80);
+            }
+
+            const text = input.value || "รัก";
+
+            push(ref(db, "answers"), {
+                text: text,
+                time: Date.now()
+            });
+
+            alert("ครบ 10 วินาทีแล้ว 💖 รู้แล้วว่ารัก");
+        }
+
+    }, 1000);
 };
 
+/* สร้างหัวใจ */
+function createHeart(){
 
-// ================= ปุ่มไม่รักปั่น =================
+    let heart=document.createElement("div");
+    heart.className="bigHeart";
+    heart.innerHTML="💖";
 
-let speed = 800;
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.top=Math.random()*100+"vh";
 
-function moveButton() {
+    document.body.appendChild(heart);
 
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-
-    boing.play();
-
-    message.style.display = "block";
-
-    if(speed > 100){
-        speed -= 80;
-    }
+    setTimeout(()=>heart.remove(),1000);
 }
 
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("click", moveButton);
+/* หัวใจลอย */
+setInterval(()=>{
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💗";
 
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*20+15)+"px";
+    heart.style.animationDuration=(Math.random()*3+2)+"s";
 
-// เด้งเร็วขึ้นเรื่อย ๆ
-setInterval(() => {
-    moveButton();
-}, speed);
+    document.body.appendChild(heart);
 
+    setTimeout(()=>heart.remove(),5000);
+
+},300);
 
 </script>
 
