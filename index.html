@@ -243,12 +243,12 @@ loveBtn.onclick = () => {
     // ลดเสียงเพลงพื้นหลัง
     let originalVolume = bgMusic.volume;
     let fadeOut = setInterval(() => {
-        if (bgMusic.volume > 0.2) {
+        if (bgMusic.volume > 0.1) {
             bgMusic.volume -= 0.05;
         } else {
             clearInterval(fadeOut);
         }
-    }, 50);
+    }, 20);
 
     // เล่นเสียงพูด
     loveSound.currentTime = 0;
