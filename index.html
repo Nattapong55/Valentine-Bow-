@@ -58,29 +58,12 @@ button{
     box-shadow:0 5px 15px rgba(255,105,180,0.4);
 }
 
+/* ปุ่มไม่รัก */
 #noBtn{
     position:absolute;
-}
-
-.heart{
-    position:fixed;
-    top:-10px;
-    animation:fall linear infinite;
-}
-
-@keyframes fall{
-    to{ transform:translateY(110vh); }
-}
-
-.bigHeart{
-    position:fixed;
-    font-size:30px;
-    animation:boom 1s linear forwards;
-}
-
-@keyframes boom{
-    from{transform:scale(0);opacity:1;}
-    to{transform:scale(3);opacity:0;}
+    left:120px;
+    top:240px;
+    transition:0.3s;
 }
 
 /* countdown */
@@ -94,6 +77,29 @@ button{
     font-weight:bold;
     display:none;
     text-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+/* หัวใจลอย */
+.heart{
+    position:fixed;
+    top:-10px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    to{ transform:translateY(110vh); }
+}
+
+/* หัวใจระเบิด */
+.bigHeart{
+    position:fixed;
+    font-size:30px;
+    animation:boom 1s linear forwards;
+}
+
+@keyframes boom{
+    from{transform:scale(0);opacity:1;}
+    to{transform:scale(3);opacity:0;}
 }
 
 </style>
@@ -124,49 +130,32 @@ button{
 
 <audio id="music" src="music.mp3" preload="auto"></audio>
 
-<!-- Firebase -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DB_URL",
-  projectId: "YOUR_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_MSG_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+<script>
 
 const music = document.getElementById("music");
 const loveBtn = document.getElementById("loveBtn");
 const noBtn = document.getElementById("noBtn");
 const input = document.getElementById("answer");
 
-let noSpeed = 1;
+let speed = 1;
 
 /* แตะหน้าจอครั้งแรก */
-window.firstTouch = function(){
+function firstTouch(){
     document.getElementById("content").style.display="block";
     music.play().catch(()=>{});
 }
 
-/* ปุ่มไม่รัก หนีเร็วขึ้น */
+/* ปุ่มไม่รัก หนีเร็วขึ้นเรื่อย ๆ */
 noBtn.onclick = () => {
 
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 80);
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 
-    noSpeed += 0.5;
-    noBtn.style.transition = 0.2 / noSpeed + "s";
+    speed += 0.4;
+    noBtn.style.transition = (0.3 / speed) + "s";
 };
 
 /* ปุ่มรัก */
@@ -193,16 +182,7 @@ loveBtn.onclick = () => {
 
             countdownEl.style.display = "none";
 
-            for(let i=0;i<40;i++){
-                setTimeout(createHeart, i*80);
-            }
-
-            const text = input.value || "รัก";
-
-            push(ref(db, "answers"), {
-                text: text,
-                time: Date.now()
-            });
+            explodeHearts();
 
             alert("ครบ 10 วินาทีแล้ว 💖 รู้แล้วว่ารัก");
         }
@@ -210,19 +190,23 @@ loveBtn.onclick = () => {
     }, 1000);
 };
 
-/* สร้างหัวใจ */
-function createHeart(){
+/* หัวใจระเบิด */
+function explodeHearts(){
 
-    let heart=document.createElement("div");
-    heart.className="bigHeart";
-    heart.innerHTML="💖";
+    for(let i=0;i<40;i++){
 
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.top=Math.random()*100+"vh";
+        let heart=document.createElement("div");
+        heart.className="bigHeart";
+        heart.innerHTML="💖";
 
-    document.body.appendChild(heart);
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.top=Math.random()*100+"vh";
 
-    setTimeout(()=>heart.remove(),1000);
+        document.body.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),1000);
+    }
+
 }
 
 /* หัวใจลอย */
