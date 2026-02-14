@@ -29,6 +29,19 @@ body {
     z-index: 10;
 }
 
+/* ปุ่มเพลงตอนโหลด */
+#musicControl {
+    margin-top: 30px;
+    background: white;
+    color: black;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+}
+
 /* เนื้อหาหลัก */
 #content {
     display: none;
@@ -55,7 +68,6 @@ button {
     border-radius: 15px;
     margin: 15px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 #loveBtn {
@@ -84,7 +96,7 @@ button {
     animation: shake 0.2s infinite;
 }
 
-/* กล่องข้อความ (แก้ให้เลื่อนได้) */
+/* กล่องข้อความ */
 #message {
     font-size: 22px;
     margin-top: 20px;
@@ -95,19 +107,6 @@ button {
     background: rgba(255,255,255,0.2);
     border-radius: 15px;
 }
-
-/* ปุ่มเพลง */
-#musicControl {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    color: black;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 25px;
-}
 </style>
 </head>
 
@@ -117,6 +116,8 @@ button {
 <div id="loading">
     ⏳ กรุณารอสักครู่... <br>
     <span id="count">20</span>
+
+    <button id="musicControl">🎵</button>
 </div>
 
 <!-- เนื้อหา -->
@@ -145,9 +146,26 @@ button {
     <source src="love.mp3" type="audio/mpeg">
 </audio>
 
-<button id="musicControl">🎵</button>
-
 <script>
+
+///// เพลงพื้นหลัง
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicControl");
+
+let playing = false;
+
+musicBtn.onclick = () => {
+    if (!playing) {
+        music.play();
+        musicBtn.innerText = "🔊";
+        playing = true;
+    } else {
+        music.pause();
+        musicBtn.innerText = "🎵";
+        playing = false;
+    }
+};
+
 
 ///// นับถอยหลังหน้าโหลด
 let time = 20;
@@ -205,25 +223,6 @@ loveBtn.onclick = () => {
     หนูคือรอยยิ้มของพี่เสมอ ❤️<br><br>
     และไม่ว่าวันไหนจะดีหรือร้าย พี่ก็จะอยู่ข้างหนูเสมอ 🤍
     `;
-};
-
-
-///// เพลงพื้นหลัง
-const music = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicControl");
-
-let playing = false;
-
-musicBtn.onclick = () => {
-    if (!playing) {
-        music.play();
-        musicBtn.innerText = "🔊";
-        playing = true;
-    } else {
-        music.pause();
-        musicBtn.innerText = "🎵";
-        playing = false;
-    }
 };
 
 </script>
