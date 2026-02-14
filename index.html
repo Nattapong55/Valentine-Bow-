@@ -69,6 +69,8 @@ img {
     display: block;
     margin: auto;
 }
+
+/* ปุ่มไม่รัก */
 #noLoveBtn {
     background: #555;
     color: white;
@@ -76,7 +78,7 @@ img {
     left: 60%;
     top: 70%;
 }
-    
+
 /* animation เด้ง */
 @keyframes pop {
     0% { transform: scale(0.8); opacity:0; }
@@ -161,7 +163,13 @@ musicBtn.onclick = () => {
             timerStarted = true;
         }
 
+    } else {
+        music.pause();
+        musicBtn.innerText = "🎵";
+        playing = false;
+    }
 };
+
 
 function startCountdown() {
 
@@ -183,6 +191,7 @@ function startCountdown() {
     }, 1000);
 }
 
+
 const noBtn = document.getElementById("noLoveBtn");
 
 function moveButton() {
@@ -193,12 +202,32 @@ function moveButton() {
     noBtn.style.top = y + "px";
 }
 
+/* วิ่งหนี 3 ครั้ง */
+let escapeCount = 0;
+
 function startNoLoveMove() {
     noBtn.classList.add("shake");
 
-    noBtn.addEventListener("mouseover", moveButton);
-    noBtn.addEventListener("click", moveButton);
+    noBtn.addEventListener("click", (e) => {
+
+        if (escapeCount < 3) {
+            e.preventDefault();
+            moveButton();
+            escapeCount++;
+        } else {
+            noBtn.innerText = "ก็รักก็ได้ ❤️";
+            noBtn.classList.remove("shake");
+        }
+
+    });
+
+    noBtn.addEventListener("mouseover", () => {
+        if (escapeCount < 3) {
+            moveButton();
+        }
+    });
 }
+
 
 const loveBtn = document.getElementById("loveBtn");
 const message = document.getElementById("message");
@@ -207,8 +236,8 @@ const bgMusic = document.getElementById("bgMusic");
 
 loveBtn.onclick = () => {
 
-    // ลดเสียงเพลงเหลือ 10%
     let originalVolume = bgMusic.volume;
+
     let fadeOut = setInterval(() => {
         if (bgMusic.volume > 0.1) {
             bgMusic.volume -= 0.05;
@@ -218,11 +247,9 @@ loveBtn.onclick = () => {
         }
     }, 20);
 
-    // เล่นเสียงพูด
     loveSound.currentTime = 0;
     loveSound.play();
 
-    // พอเสียงพูดจบ เพลงกลับดัง
     loveSound.onended = () => {
 
         let fadeIn = setInterval(() => {
