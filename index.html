@@ -3,110 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Princess Bow 💖</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500&display=swap" rel="stylesheet">
+<title>ถึงโบว์ เจ้าหญิงของเค้า 👑💖</title>
 
 <style>
+
 body{
-  margin:0;
-  font-family:'Prompt',sans-serif;
-  text-align:center;
-  background:linear-gradient(135deg,#ffd6ec,#ffe9f6,#fff);
-  overflow:hidden;
+    margin:0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg,#ffd6e7,#fff0f6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
 }
 
+/* กล่องหลัก */
 .container{
-  padding:30px;
+    background:white;
+    padding:30px;
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(255,105,180,0.4);
+    max-width:340px;
+    position:relative;
 }
 
+/* มงกุฎ */
+.crown{
+    font-size:30px;
+    position:absolute;
+    top:-20px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+/* รูปแฟน */
+.photo{
+    width:230px;
+    border-radius:20px;
+    border:5px solid #fff;
+    box-shadow:0 10px 25px rgba(255,105,180,0.5);
+    margin-bottom:15px;
+}
+
+/* หัวข้อ */
 h1{
-  color:#ff4da6;
-  font-size:28px;
+    color:#ff4f8b;
+    font-size:23px;
+    margin:10px 0;
 }
 
-img{
-  width:220px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(255,105,180,0.4);
+/* ข้อความ */
+p{
+    color:#555;
+    font-size:15px;
 }
 
+/* ปุ่ม */
 button{
-  margin-top:20px;
-  padding:15px 25px;
-  font-size:18px;
-  border:none;
-  border-radius:30px;
-  background:linear-gradient(45deg,#ff4da6,#ff85c1);
-  color:white;
-  cursor:pointer;
-  box-shadow:0 5px 15px rgba(255,105,180,0.5);
+    background:linear-gradient(45deg,#ff4f8b,#ff7aa8);
+    border:none;
+    color:white;
+    padding:12px 22px;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
+    box-shadow:0 5px 15px rgba(255,105,180,0.4);
+    transition:0.3s;
 }
 
 button:hover{
-  transform:scale(1.05);
+    transform:scale(1.08);
+}
+
+/* ปุ่มหัวใจ */
+.heartBtn{
+    font-size:30px;
+    cursor:pointer;
+    margin-top:10px;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+}
+
+/* ข้อความเซอร์ไพรส์ */
+.message{
+    display:none;
+    margin-top:15px;
+    color:#ff4f8b;
+    font-weight:bold;
+    font-size:16px;
 }
 
 /* หัวใจลอย */
 .heart{
-  position:fixed;
-  color:pink;
-  font-size:20px;
-  animation:float 6s linear infinite;
+    position:fixed;
+    top:-10px;
+    animation:fall linear infinite;
 }
 
-@keyframes float{
-  0%{transform:translateY(100vh) scale(0);}
-  100%{transform:translateY(-10vh) scale(1.5);}
+@keyframes fall{
+    to{
+        transform:translateY(110vh);
+    }
 }
+
 </style>
-</head>
 
+</head>
 <body>
+
+<!-- 🎵 เพลง -->
+<audio id="music" autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <div class="container">
 
-<h1>💖 Happy Valentine Princess Bow 👑</h1>
+<div class="crown">👑</div>
 
-<img src="bow.jpg">
+<img src="bow.jpg" class="photo">
 
-<p>
-โบว์คือเจ้าหญิงของเค้าเสมอ 🥺💗<br>
-รักที่สุดในโลกเลยนะ 💕
-</p>
+<h1>สุขสันต์วันวาเลนไทน์นะ โบว์ 💖</h1>
 
-<button onclick="startLove()">💘 กดหัวใจของเรา 💘</button>
+<p>ขอบคุณที่เข้ามาเป็นรอยยิ้มของเค้าในทุก ๆ วัน ❤️</p>
+
+<button onclick="showMessage()">กดดูเซอร์ไพรส์ 🎁</button>
+
+<div class="heartBtn" onclick="playMusic()">💖</div>
+
+<div class="message" id="msg">
+เค้ารักโบว์ที่สุดในโลกเลยนะ 💕<br>
+อยู่ด้วยกันไปนาน ๆ นะ เจ้าหญิงของเค้า 👑🥰
+</div>
 
 </div>
 
-<audio id="music" autoplay loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-let music = document.getElementById("music");
 
-function startLove(){
-  music.play();
+const music = document.getElementById("music");
 
-  alert("เซอร์ไพรส์ 💖 รักโบว์ที่สุดเลยนะ 👑");
+/* มือถือบางเครื่องต้องกดก่อน */
+document.body.addEventListener("click", () => {
+    music.play().catch(()=>{});
+}, { once:true });
 
-  for(let i=0;i<20;i++){
-    let heart=document.createElement("div");
+function playMusic(){
+    music.play();
+}
+
+function showMessage(){
+    document.getElementById("msg").style.display="block";
+}
+
+/* สร้างหัวใจลอย */
+setInterval(()=>{
+    const heart=document.createElement("div");
     heart.className="heart";
     heart.innerHTML="💖";
     heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(20+Math.random()*30)+"px";
+    heart.style.fontSize=(Math.random()*20+15)+"px";
+    heart.style.animationDuration=(Math.random()*3+2)+"s";
     document.body.appendChild(heart);
 
-    setTimeout(()=>heart.remove(),6000);
-  }
-}
+    setTimeout(()=>heart.remove(),5000);
+},300);
 
-// เผื่อมือถือบล็อก autoplay
-document.addEventListener("click",()=>{
-  music.play();
-});
 </script>
 
 </body>
