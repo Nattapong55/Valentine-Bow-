@@ -11,7 +11,7 @@
 body{
     margin:0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#ffd6e7,#fff0f6);
+    background: linear-gradient(135deg,#ff9ec4,#ffcce0);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -19,7 +19,7 @@ body{
     overflow:hidden;
 }
 
-/* กล่องหลัก */
+/* กล่อง */
 .container{
     background:white;
     padding:30px;
@@ -46,10 +46,6 @@ body{
     margin-bottom:15px;
 }
 
-h1{
-    color:#ff4f8b;
-}
-
 button{
     background:linear-gradient(45deg,#ff4f8b,#ff7aa8);
     border:none;
@@ -58,29 +54,12 @@ button{
     border-radius:25px;
     font-size:16px;
     cursor:pointer;
-    margin-top:15px;
+    margin:10px;
     box-shadow:0 5px 15px rgba(255,105,180,0.4);
-    transition:0.3s;
 }
 
-button:hover{
-    transform:scale(1.08);
-}
-
-.message{
-    display:none;
-    margin-top:15px;
-    color:#ff4f8b;
-    font-weight:bold;
-}
-
-input{
-    padding:10px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    width:80%;
-    margin-top:10px;
-    text-align:center;
+#noBtn{
+    position:absolute;
 }
 
 .heart{
@@ -90,9 +69,7 @@ input{
 }
 
 @keyframes fall{
-    to{
-        transform:translateY(110vh);
-    }
+    to{ transform:translateY(110vh); }
 }
 
 .bigHeart{
@@ -106,117 +83,147 @@ input{
     to{transform:scale(3);opacity:0;}
 }
 
+/* countdown */
+#countdown{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:80px;
+    color:white;
+    font-weight:bold;
+    display:none;
+    text-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
 </style>
 </head>
 
-<body>
+<body onclick="firstTouch()">
 
-<div class="container">
+<div class="container" id="content" style="display:none;">
 
 <div class="crown">👑</div>
 
 <img src="bow.jpg" class="photo">
 
-<h1>สุขสันต์วันวาเลนไทน์นะ โบว์ 💖</h1>
+<h2>สุขสันต์วันวาเลนไทน์นะ โบว์ 💖</h2>
 
-<p>ขอบคุณที่เข้ามาเป็นรอยยิ้มของเค้า ❤️</p>
-
-<button onclick="start()">กดรับเซอร์ไพรส์ 🎁</button>
-
-<div class="message" id="msg">
-
-เค้ารักโบว์ที่สุดในโลกเลยนะ 💕<br>
-อยู่ด้วยกันไปนาน ๆ นะ เจ้าหญิงของเค้า 👑🥰
-
-<br><br>
-
-💌 รักพี่ไหม ?
-<br>
+<p>เค้ารักโบว์ที่สุดในโลกเลยนะ 💕</p>
 
 <input type="text" id="answer" placeholder="พิมพ์คำตอบตรงนี้">
 
 <br>
 
-<button onclick="checkLove()">ส่งคำตอบ 💕</button>
+<button id="loveBtn">รัก 💖</button>
+<button id="noBtn">ไม่รัก 😝</button>
 
 </div>
 
-</div>
+<div id="countdown">10</div>
 
-<!-- เพลง -->
 <audio id="music" src="music.mp3" preload="auto"></audio>
 
-<script>
+<!-- Firebase -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DB_URL",
+  projectId: "YOUR_ID",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_MSG_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const music = document.getElementById("music");
+const loveBtn = document.getElementById("loveBtn");
+const noBtn = document.getElementById("noBtn");
+const input = document.getElementById("answer");
 
-/* เริ่มเพลง */
-function start(){
+let noSpeed = 1;
 
-    music.play().then(()=>{
-        console.log("เล่นเพลงแล้ว");
-    }).catch(err=>{
-        console.log("ยังไม่อนุญาต", err);
-    });
-
-    showMessage();
+/* แตะหน้าจอครั้งแรก */
+window.firstTouch = function(){
+    document.getElementById("content").style.display="block";
+    music.play().catch(()=>{});
 }
 
+/* ปุ่มไม่รัก หนีเร็วขึ้น */
+noBtn.onclick = () => {
 
-/* เปิดข้อความ */
-function showMessage(){
-    document.getElementById("msg").style.display="block";
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    noSpeed += 0.5;
+    noBtn.style.transition = 0.2 / noSpeed + "s";
+};
+
+/* ปุ่มรัก */
+loveBtn.onclick = () => {
+
+    music.play().catch(()=>{});
+
+    loveBtn.disabled = true;
+    noBtn.disabled = true;
+
+    const countdownEl = document.getElementById("countdown");
+
+    let timeLeft = 10;
+    countdownEl.style.display = "block";
+    countdownEl.innerText = timeLeft;
+
+    const timer = setInterval(() => {
+
+        timeLeft--;
+        countdownEl.innerText = timeLeft;
+
+        if(timeLeft <= 0){
+            clearInterval(timer);
+
+            countdownEl.style.display = "none";
+
+            for(let i=0;i<40;i++){
+                setTimeout(createHeart, i*80);
+            }
+
+            const text = input.value || "รัก";
+
+            push(ref(db, "answers"), {
+                text: text,
+                time: Date.now()
+            });
+
+            alert("ครบ 10 วินาทีแล้ว 💖 รู้แล้วว่ารัก");
+        }
+
+    }, 1000);
+};
+
+/* สร้างหัวใจ */
+function createHeart(){
+
+    let heart=document.createElement("div");
+    heart.className="bigHeart";
+    heart.innerHTML="💖";
+
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.top=Math.random()*100+"vh";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),1000);
 }
-
-
-/* ตรวจคำตอบ */
-function checkLove(){
-
-    let text = document.getElementById("answer").value.trim();
-
-    if(text.includes("รัก")){
-
-        explodeHearts();
-        alert("เค้ารู้แล้วว่าโบว์รัก 😍💖");
-
-    }else if(text.includes("ไม่")){
-
-        runAwayButton();
-
-    }else{
-
-        alert("ตอบดี ๆ นะ 😆");
-
-    }
-}
-
-
-/* ปุ่มหนี */
-function runAwayButton(){
-
-    alert("ไม่รักจริงหรอ 😭");
-
-}
-
-
-/* หัวใจระเบิด */
-function explodeHearts(){
-
-    for(let i=0;i<50;i++){
-
-        let heart=document.createElement("div");
-        heart.className="bigHeart";
-        heart.innerHTML="💖";
-
-        heart.style.left=Math.random()*100+"vw";
-        heart.style.top=Math.random()*100+"vh";
-
-        document.body.appendChild(heart);
-
-        setTimeout(()=>heart.remove(),1000);
-    }
-}
-
 
 /* หัวใจลอย */
 setInterval(()=>{
