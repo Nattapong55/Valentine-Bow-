@@ -204,22 +204,7 @@ const loveSound = document.getElementById("loveSound");
 const bgMusic = document.getElementById("bgMusic");
 
 loveBtn.onclick = () => {
-    // ฟังก์ชันเด้งหนี
-function moveLoveBtn() {
-    loveBtn.style.position = "fixed";
 
-    let x = Math.random() * (window.innerWidth - 120);
-    let y = Math.random() * (window.innerHeight - 80);
-
-    loveBtn.style.left = x + "px";
-    loveBtn.style.top = y + "px";
-}
-
-function showLoveMessage() {
-
-    // ซ่อนปุ่ม
-    loveBtn.style.display = "none";
-    
     // ลดเสียงเพลงเหลือ 10%
     let originalVolume = bgMusic.volume;
     let fadeOut = setInterval(() => {
