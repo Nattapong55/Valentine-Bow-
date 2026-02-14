@@ -2,68 +2,46 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ถึงโบว์ จากคนที่รักโบว์ที่สุด ❤️</title>
+<title>For Bow ❤️</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: sans-serif;
-    background: linear-gradient(135deg, #ffd6e7, #ffeef5, #ffe0ec);
-    overflow: hidden;
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(45deg,#ff9a9e,#fad0c4);
+    font-family:sans-serif;
+    overflow:hidden;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+h1{
+    color:white;
+    font-size:50px;
+    text-align:center;
 }
 
-.card {
-    background: white;
-    border-radius: 25px;
-    padding: 20px;
-    max-width: 420px;
-    width: 90%;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    text-align: center;
-    position: relative;
-    z-index: 2;
+button{
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#ff4d6d;
+    cursor:pointer;
 }
 
-img {
-    width: 100%;
-    border-radius: 20px;
-    margin-bottom: 15px;
+.heart{
+    position:fixed;
+    top:-10px;
+    color:red;
+    animation:fall 5s linear infinite;
 }
 
-h1 {
-    color: #ff4d88;
-}
-
-button {
-    background: #ff4d88;
-    border: none;
-    padding: 12px 20px;
-    color: white;
-    border-radius: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.heart {
-    position: fixed;
-    top: -10px;
-    font-size: 20px;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh);
-        opacity: 0;
+@keyframes fall{
+    to{
+        transform:translateY(100vh);
     }
 }
 </style>
@@ -71,65 +49,29 @@ button {
 
 <body>
 
-<div class="container">
-    <div class="card">
-
-        <img src="https://i.imgur.com/yourimage.jpg">
-
-        <h1>สุขสันต์วันวาเลนไทน์นะ โบว์ 💕</h1>
-
-        <p id="message">
-            ขอบคุณที่เข้ามาเป็นรอยยิ้มของเราในทุก ๆ วัน ❤️
-        </p>
-
-        <button onclick="nextMessage()">กดดูเซอร์ไพรส์ 💌</button>
-        <br>
-        <button onclick="startExperience()">กดเปิดเพลง 🎶</button>
-
-    </div>
+<div>
+<h1>โบ ❤️</h1>
+<h2 style="color:white">สุขสันต์วันวาเลนไทน์นะ</h2>
+<button onclick="love()">กดตรงนี้สิ</button>
 </div>
 
-<audio id="music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9a1b0c2f9c.mp3?filename=romantic-love-ambient-11097.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-const messages = [
-    "รักโบว์ที่สุดในโลกเลยนะ 💖",
-    "อยู่กับเราไปนาน ๆ เลยน้า 🥰",
-    "โบว์คือความโชคดีที่สุดของเรา ❤️",
-    "ทุกวันมีความหมาย เพราะมีโบว์ ✨",
-    "เราอยากดูแลโบว์ไปตลอดเลยนะ 💕"
-];
-
-let index = 0;
-
-function nextMessage() {
-    index = (index + 1) % messages.length;
-    document.getElementById("message").innerText = messages[index];
+function love(){
+    alert("รักโบที่สุดเลย 💕");
 }
 
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=Math.random()*20+20+"px";
     document.body.appendChild(heart);
 
-    setTimeout(() => {
-        heart.remove();
-    }, 5000);
+    setTimeout(()=>heart.remove(),5000);
 }
 
-function startHearts() {
-    setInterval(createHeart, 300);
-}
-
-function startExperience() {
-    document.getElementById("music").play();
-    startHearts();
-}
+setInterval(createHeart,300);
 </script>
 
 </body>
