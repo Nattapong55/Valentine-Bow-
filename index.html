@@ -4,217 +4,137 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ถึงโบว์ เจ้าหญิงของเค้า 👑💖</title>
+<title>Happy Valentine 💖</title>
 
 <style>
 
 body{
     margin:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#ffd6e7,#fff0f6);
-    overflow:hidden;
-}
-
-/* หน้าโหลด */
-#startScreen{
-    position:fixed;
-    width:100%;
-    height:100%;
+    font-family: "Prompt", sans-serif;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    background:linear-gradient(135deg,#ffc1da,#ffe6f2);
-    z-index:10;
+    height:100vh;
+    overflow:hidden;
 }
 
-.gift{
-    font-size:80px;
-    cursor:pointer;
-    animation:jump 1.2s infinite;
-}
-
-@keyframes jump{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-15px);}
-}
-
-/* กล่องหลัก */
 .container{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:white;
-    padding:30px;
-    border-radius:30px;
     text-align:center;
-    box-shadow:0 15px 40px rgba(255,105,180,0.4);
-    max-width:340px;
+    color:white;
+}
+
+button{
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:30px;
+    background:#ff4d6d;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+#content{
     display:none;
+    animation:fade 1.5s;
 }
 
-.crown{
-    font-size:30px;
-    position:absolute;
-    top:-20px;
-    left:50%;
-    transform:translateX(-50%);
-}
-
-.photo{
-    width:230px;
+img{
+    width:250px;
     border-radius:20px;
-    border:5px solid #fff;
-    box-shadow:0 10px 25px rgba(255,105,180,0.5);
+    margin-top:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 
 h1{
-    color:#ff4f8b;
+    font-size:28px;
+    margin-top:20px;
 }
 
-p{
-    color:#555;
-}
-
-/* ปุ่ม */
-button{
-    background:linear-gradient(45deg,#ff4f8b,#ff7aa8);
-    border:none;
-    color:white;
-    padding:12px 22px;
-    border-radius:25px;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:15px;
-    box-shadow:0 5px 15px rgba(255,105,180,0.4);
-}
-
-/* ปุ่มหัวใจ */
-.heartBtn{
-    font-size:32px;
-    margin-top:10px;
-    cursor:pointer;
-    animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.2);}
-    100%{transform:scale(1);}
-}
-
-.message{
-    display:none;
-    margin-top:15px;
-    color:#ff4f8b;
-    font-weight:bold;
+@keyframes fade{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 /* หัวใจลอย */
+
 .heart{
-    position:fixed;
-    top:-10px;
-    animation:fall linear infinite;
+    position:absolute;
+    color:#ff4d6d;
+    animation:float 6s linear infinite;
+    font-size:20px;
 }
 
-@keyframes fall{
-    to{ transform:translateY(110vh); }
+@keyframes float{
+    from{
+        transform:translateY(100vh) scale(1);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-10vh) scale(2);
+        opacity:0;
+    }
 }
 
 </style>
-
 </head>
+
 <body>
 
-<!-- เพลง -->
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
+<div class="container">
 
-<!-- หน้าเริ่ม -->
-<div id="startScreen">
-    <div style="font-size:22px;color:#ff4f8b;margin-bottom:20px;">
-        มีอะไรจะให้เจ้าหญิง 👑💖
+    <button onclick="startSurprise()">กดดูเซอร์ไพรส์ 🎁</button>
+
+    <div id="content">
+        <h1>สุขสันต์วันวาเลนไทน์นะโบว์ 💕</h1>
+        <p>เค้ารักโบว์ที่สุดในโลกเลยนะ 🥰</p>
+
+        <img src="bow.jpg" alt="Bow">
+
     </div>
 
-    <div class="gift" onclick="startLove()">🎁</div>
-
-    <div style="margin-top:15px;color:#ff4f8b;">
-        กดเพื่อเปิดของขวัญ
-    </div>
 </div>
 
-<!-- การ์ด -->
-<div class="container" id="mainCard">
-
-<div class="crown">👑</div>
-
-<img src="bow.jpg" class="photo">
-
-<h1>สุขสันต์วันวาเลนไทน์นะ โบว์ 💖</h1>
-
-<p>ขอบคุณที่เข้ามาเป็นรอยยิ้มของเค้าในทุก ๆ วัน ❤️</p>
-
-<button onclick="showMessage()">กดดูเซอร์ไพรส์ 🎁</button>
-
-<div class="heartBtn" onclick="playMusic()">💖</div>
-
-<div class="message" id="msg">
-เค้ารักโบว์ที่สุดในโลกเลยนะ 💕<br>
-อยู่ด้วยกันไปนาน ๆ นะ เจ้าหญิงของเค้า 👑🥰
-</div>
-
-</div>
+<audio id="music" src="music.mp3" preload="auto"></audio>
 
 <script>
 
 const music = document.getElementById("music");
 
-/* เริ่ม */
-function startLove(){
-
-    document.getElementById("startScreen").style.display="none";
-    document.getElementById("mainCard").style.display="block";
+function startSurprise(){
 
     music.play();
 
-    burstHearts();
+    document.getElementById("content").style.display="block";
+
+    createHearts();
 }
 
-/* เล่นเพลง */
-function playMusic(){
-    music.play();
+
+// สร้างหัวใจลอย
+function createHearts(){
+
+    setInterval(()=>{
+
+        const heart = document.createElement("div");
+
+        heart.className="heart";
+        heart.innerHTML="💖";
+
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(20+Math.random()*30)+"px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),6000);
+
+    },300);
 }
-
-/* ข้อความ */
-function showMessage(){
-    document.getElementById("msg").style.display="block";
-}
-
-/* หัวใจพุ */
-function burstHearts(){
-    for(let i=0;i<40;i++){
-        setTimeout(()=>{
-            createHeart();
-        },i*80);
-    }
-}
-
-/* หัวใจลอย */
-function createHeart(){
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💖";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(Math.random()*25+15)+"px";
-    heart.style.animationDuration=(Math.random()*3+2)+"s";
-    document.body.appendChild(heart);
-
-    setTimeout(()=>heart.remove(),5000);
-}
-
-setInterval(createHeart,400);
 
 </script>
 
